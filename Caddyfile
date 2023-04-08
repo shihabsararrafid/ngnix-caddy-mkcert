@@ -1,0 +1,26 @@
+
+main.localhost { 
+   tls local.cert local.key
+   reverse_proxy http://localhost:8000
+}
+
+another.localhost {
+   tls local.cert local.key
+   reverse_proxy http://localhost:8001
+}
+
+localhost {
+   tls local.cert local.key
+   handle /another {
+
+   uri strip_prefix another
+   reverse_proxy http://localhost:8000
+   
+   }
+
+   handle /* {
+      reverse_proxy http://localhost:8001
+   }
+
+   
+} 
